@@ -1,4 +1,4 @@
-################################################################################
+##########################################################################
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a
 #  copy of this software and associated documentation files (the "Software"),
@@ -36,7 +36,7 @@ def getDataPoint(quote):
     bid_price = float(quote['top_bid']['price'])
     ask_price = float(quote['top_ask']['price'])
     price = (bid_price + ask_price) / 2
-    price = round(price, 2) # stock price to 2 decimal places
+    price = round(price, 2)  # stock price to 2 decimal places
     return stock, bid_price, ask_price, price
 
 
@@ -44,23 +44,25 @@ def getRatio(price_a, price_b):
     """ Get ratio of price_a and price_b """
     if (price_b == 0):
         return
-    return round((price_a / price_b), 2) # ratio to 2 decimal places
+    return round((price_a / price_b), 2)  # ratio to 2 decimal places
 
 
 # Main
 if __name__ == "__main__":
     # Query the price once every N seconds.
     for _ in iter(range(N)):
-        quotes = json.loads(urllib.request.urlopen(QUERY.format(random.random())).read())
+        quotes = json.loads(
+            urllib.request.urlopen(
+                QUERY.format(
+                    random.random())).read())
 
         prices = {}
         for quote in quotes:
             stock, bid_price, ask_price, price = getDataPoint(quote)
             prices[stock] = price
             # using string formatting to print the values
-            print("Quoted {} at (bid:{:.2f}, ask:{:.2f}, price:{:.2f})".format(stock, bid_price, ask_price, price))
-
-            # print("Quoted %s at (bid:%s, ask:%s, price:%s)" % (stock, bid_price, ask_price, price))
+            print(
+                "Quoted {} at (bid:{:.2f}, ask:{:.2f}, price:{:.2f})".format(
+                    stock, bid_price, ask_price, price))
 
         print('Ratio {:.2f}'.format(getRatio(prices['ABC'], prices['DEF'])))
-        # print("Ratio %s" % getRatio(prices['ABC'], prices['DEF']))
